@@ -1,0 +1,11 @@
+{
+	"name": "LS_Blob_veenaraw",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"resourceId": "/subscriptions/273d29c6-ff10-44ce-8664-60bff8887728/resourceGroups/rg_veena_acc/providers/Microsoft.Storage/storageAccounts/veenaraw"
+		},
+		"annotations": []
+	}
+}

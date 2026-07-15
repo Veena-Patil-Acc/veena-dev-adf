@@ -1,0 +1,15 @@
+{
+	"name": "DS_Sql_emp_details",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSql_sql-veena",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"typeProperties": {
+			"tableName": "dbo.emp_details"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

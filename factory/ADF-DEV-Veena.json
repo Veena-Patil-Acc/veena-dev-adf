@@ -1,0 +1,15 @@
+{
+	"name": "ADF-DEV-Veena",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Enabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "19a8b5ab-d654-4abb-848f-963d4a10f99d",
+		"tenantId": "e0793d39-0939-496d-b129-198edd916feb"
+	}
+}
