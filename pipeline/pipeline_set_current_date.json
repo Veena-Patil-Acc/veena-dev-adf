@@ -1,5 +1,5 @@
 {
-  "name": "pl_SetCurrentDate",
+  "name": "pipeline_set_current_date",
   "properties": {
     "description": "Sets a pipeline variable to the current date in yyyy-MM-dd format",
     "variables": {
