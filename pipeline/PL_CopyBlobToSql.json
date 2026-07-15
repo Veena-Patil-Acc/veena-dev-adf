@@ -7,12 +7,21 @@
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
+					"retry": 0,
 					"retryIntervalInSeconds": 30
 				},
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource"
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
 					},
 					"sink": {
 						"type": "SqlSink",
