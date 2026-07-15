@@ -1,0 +1,27 @@
+{
+	"name": "LS_AzureSql_sql-veena",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Server=tcp:sql-veena-acc.database.windows.net;Initial Catalog=sql-db-veena;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+			"userName": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault_veena",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-user-name"
+			},
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault_veena",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-password"
+			}
+		},
+		"annotations": []
+	}
+}

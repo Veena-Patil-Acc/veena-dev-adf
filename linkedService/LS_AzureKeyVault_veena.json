@@ -1,0 +1,11 @@
+{
+	"name": "LS_AzureKeyVault_veena",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://veena-kv.vault.azure.net/"
+		},
+		"annotations": []
+	}
+}

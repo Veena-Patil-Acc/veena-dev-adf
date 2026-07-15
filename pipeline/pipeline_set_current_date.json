@@ -1,25 +1,33 @@
 {
-  "name": "pipeline_set_current_date",
-  "properties": {
-    "description": "Sets a pipeline variable to the current date in yyyy-MM-dd format",
-    "variables": {
-      "CurrentDate": {
-        "type": "String"
-      }
-    },
-    "activities": [
-      {
-        "name": "SetCurrentDate",
-        "type": "SetVariable",
-        "typeProperties": {
-          "variableName": "CurrentDate",
-          "value": {
-            "value": "@utcnow('yyyy-MM-dd')",
-            "type": "Expression"
-          }
-        }
-      }
-    ],
-    "annotations": []
-  }
+	"name": "pipeline_set_current_date",
+	"properties": {
+		"description": "Sets a pipeline variable to the current date in yyyy-MM-dd format",
+		"activities": [
+			{
+				"name": "SetCurrentDate",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentDate",
+					"value": {
+						"value": "@utcnow('yyyy-MM-dd')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"CurrentDate": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-07-15T11:12:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -1,0 +1,86 @@
+{
+	"name": "PL_CopyBlobToSql",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyBlobToSql",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource"
+					},
+					"sink": {
+						"type": "SqlSink",
+						"writeBatchSize": 0
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Blob_employee",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Sql_emp_details",
+						"type": "DatasetReference"
+					}
+				],
+				"translator": {
+					"type": "TabularTranslator",
+					"mappings": [
+						{
+							"source": {
+								"name": "Name"
+							},
+							"sink": {
+								"name": "Name"
+							}
+						},
+						{
+							"source": {
+								"name": "ID"
+							},
+							"sink": {
+								"name": "ID"
+							}
+						},
+						{
+							"source": {
+								"name": "Place"
+							},
+							"sink": {
+								"name": "Place"
+							}
+						},
+						{
+							"source": {
+								"name": "Company"
+							},
+							"sink": {
+								"name": "Company"
+							}
+						},
+						{
+							"source": {
+								"name": "Salary"
+							},
+							"sink": {
+								"name": "Salary"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-07-13T12:39:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
