@@ -7,6 +7,29 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-DEV-Veena"
 		},
+		"LS_Blob_veenaraw_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Blob_veenaraw'"
+		},
+		"LS_AzureKeyVault_veena_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://veena-kv.vault.azure.net/"
+		},
+		"LS_AzureSql_sql-veena_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureSql_sql-veena'"
+		},
+		"LS_AzureSql_sql-veena_properties_typeProperties_userName": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault_veena",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-user-name"
+			}
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -33,6 +56,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_Blob_veenaraw_connectionString": {
+						"value": "[parameters('LS_Blob_veenaraw_connectionString')]"
+					},
+					"LS_AzureKeyVault_veena_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_AzureKeyVault_veena_properties_typeProperties_baseUrl')]"
+					},
+					"LS_AzureSql_sql-veena_connectionString": {
+						"value": "[parameters('LS_AzureSql_sql-veena_connectionString')]"
+					},
+					"LS_AzureSql_sql-veena_properties_typeProperties_userName": {
+						"value": "[parameters('LS_AzureSql_sql-veena_properties_typeProperties_userName')]"
 					}
 				}
 			},

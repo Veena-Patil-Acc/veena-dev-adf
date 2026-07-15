@@ -6,6 +6,29 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-DEV-Veena"
+		},
+		"LS_Blob_veenaraw_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Blob_veenaraw'"
+		},
+		"LS_AzureKeyVault_veena_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://veena-kv.vault.azure.net/"
+		},
+		"LS_AzureSql_sql-veena_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureSql_sql-veena'"
+		},
+		"LS_AzureSql_sql-veena_properties_typeProperties_userName": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault_veena",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-user-name"
+			}
 		}
 	},
 	"variables": {
@@ -45,9 +68,214 @@
 						"type": "String"
 					}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2026-07-15T11:12:29Z"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureKeyVault_veena')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_AzureKeyVault_veena_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Blob_veenaraw')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_Blob_veenaraw_connectionString')]",
+					"resourceId": "/subscriptions/273d29c6-ff10-44ce-8664-60bff8887728/resourceGroups/rg_veena_acc/providers/Microsoft.Storage/storageAccounts/veenaraw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Blob_employee')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Blob_veenaraw",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "employee_details",
+						"container": "raw"
+					},
+					"columnDelimiter": ",",
+					"encodingName": "utf-8",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob_veenaraw')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureSql_sql-veena')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_AzureSql_sql-veena_connectionString')]",
+					"userName": "[parameters('LS_AzureSql_sql-veena_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_AzureKeyVault_veena",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "sql-server-password"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureKeyVault_veena')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Sql_emp_details')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSql_sql-veena",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"typeProperties": {
+					"tableName": "dbo.emp_details"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureSql_sql-veena')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_CopyBlobToSql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CopyBlobToSql",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"retry": 0,
+							"retryIntervalInSeconds": 30
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlSink",
+								"writeBatchSize": 0
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Blob_employee",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Sql_emp_details",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"translator": {
+							"type": "TabularTranslator",
+							"mappings": [
+								{
+									"source": {
+										"name": "Name"
+									},
+									"sink": {
+										"name": "Name"
+									}
+								},
+								{
+									"source": {
+										"name": "ID"
+									},
+									"sink": {
+										"name": "ID"
+									}
+								},
+								{
+									"source": {
+										"name": "Place"
+									},
+									"sink": {
+										"name": "Place"
+									}
+								},
+								{
+									"source": {
+										"name": "Company"
+									},
+									"sink": {
+										"name": "Company"
+									}
+								},
+								{
+									"source": {
+										"name": "Salary"
+									},
+									"sink": {
+										"name": "Salary"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2026-07-13T12:39:29Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Blob_employee')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Sql_emp_details')]"
+			]
 		}
 	]
 }

@@ -5,6 +5,25 @@
 		"factoryName": {
 			"value": "ADF-DEV-Veena"
 		},
+		"LS_Blob_veenaraw_connectionString": {
+			"value": ""
+		},
+		"LS_AzureKeyVault_veena_properties_typeProperties_baseUrl": {
+			"value": "https://veena-kv.vault.azure.net/"
+		},
+		"LS_AzureSql_sql-veena_connectionString": {
+			"value": ""
+		},
+		"LS_AzureSql_sql-veena_properties_typeProperties_userName": {
+			"value": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_AzureKeyVault_veena",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sql-server-user-name"
+			}
+		},
 		"containerUri": {
 			"value": ""
 		},
