@@ -1,0 +1,25 @@
+{
+  "name": "pipeline_set_current_date",
+  "properties": {
+    "description": "Sets a pipeline variable to the current date in yyyy-MM-dd format",
+    "variables": {
+      "CurrentDate": {
+        "type": "String"
+      }
+    },
+    "activities": [
+      {
+        "name": "SetCurrentDate",
+        "type": "SetVariable",
+        "typeProperties": {
+          "variableName": "CurrentDate",
+          "value": {
+            "value": "@utcnow('yyyy-MM-dd')",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "annotations": []
+  }
+}
