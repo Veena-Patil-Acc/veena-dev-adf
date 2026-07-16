@@ -26,10 +26,7 @@
 					"sink": {
 						"type": "SqlSink",
 						"writeBatchSize": 0,
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true
-						},
+						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
